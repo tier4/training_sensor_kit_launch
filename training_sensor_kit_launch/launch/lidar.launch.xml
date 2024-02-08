@@ -1,7 +1,7 @@
 <launch>
   <arg name="launch_driver" default="true"/>
   <arg name="host_ip" default="192.168.1.10"/>
-  <arg name="use_concat_filter" default="true"/>
+  <arg name="use_concat_filter" default="false"/>
   <arg name="vehicle_id" default="$(env VEHICLE_ID default)"/>
   <arg name="vehicle_mirror_param_file"/>
   <arg name="use_pointcloud_container" default="false" description="launch pointcloud container"/>
@@ -32,5 +32,9 @@
       <arg name="use_pointcloud_container" value="$(var use_pointcloud_container)"/>
       <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
     </include>
+
+    <arg name="original_lidar_topic_name" default="/sensing/lidar/top/pointcloud"/>
+    <arg name="lidar_topic_name" default="/sensing/lidar/concatenated/pointcloud"/>
+    <node pkg="topic_tools" exec="relay" name="lidar_relay" args="$(var original_lidar_topic_name) $(var lidar_topic_name)"/>
   </group>
 </launch>
